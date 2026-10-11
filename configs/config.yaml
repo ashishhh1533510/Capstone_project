@@ -1,0 +1,27 @@
+# Central configuration. Paths are relative to the project root.
+
+seed: 42
+
+paths:
+  raw: data/raw
+  processed: data/processed
+  pcaps: data/pcaps
+  models: models
+  figures: reports/figures
+  tables: reports/tables
+
+data:
+  train_csv: UNSW_NB15_training-set.csv
+  test_csv: UNSW_NB15_testing-set.csv
+
+splits:
+  validation_fraction: 0.15
+  # Removed from train/validation only, for the unseen-attack split (B)
+  held_out_classes:
+    - DoS
+    - Reconnaissance
+    - Backdoor
+
+thresholds:
+  # Percentile of normal-validation scores used for IF, OCSVM and the DNN latency gap
+  percentile: 95

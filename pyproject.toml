@@ -1,0 +1,61 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cnad"
+version = "0.1.0"
+description = "Cloud-based network traffic analysis, anomaly detection and latency prediction (UNSW-NB15)"
+readme = "README.md"
+requires-python = ">=3.11,<3.12"
+authors = [{ name = "Ashish Kumar" }]
+# Versions are pinned to the set resolved during Phase 0 setup.
+dependencies = [
+    "pandas==3.0.6",
+    "numpy==2.4.6",
+    "pyarrow==25.0.1",
+    "scikit-learn==1.9.1",
+    "torch==2.14.1",
+    "optuna==5.0.0",
+    "joblib==1.6.0",
+    "pyyaml==6.0.3",
+    "matplotlib==3.11.2",
+    "seaborn==0.13.2",
+    "fastapi==0.143.0",
+    "uvicorn==0.54.0",
+    "pydantic==2.14.0",
+    "azure-storage-blob==12.31.0",
+    "adlfs==2026.8.0",
+    "streamlit==1.65.0",
+    "plotly==7.1.0",
+    "langchain==1.4.4",
+    "langgraph==1.2.14",
+    "langchain-google-genai==4.4.1",
+    "langsmith==0.14.7",
+    "bert-score==0.3.13",
+    "python-dotenv==1.2.4",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest==9.1.1",
+    "ruff==0.17.0",
+    "jupyter==1.1.1",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+cnad = ["live/*.sh"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
