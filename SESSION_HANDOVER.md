@@ -226,6 +226,16 @@ or `reports/figures/eda_*.png`, and summarised in `reports/data_facts.md`. `pyte
 | `reports/data_facts.md` | Half-page note for Review 2 |
 | `.gitignore` | **Bug fix:** `data/` also ignored `src/cnad/data/`, so Phase 0 never committed its `__init__.py`. Now `/data/` and `/models/` (root only) |
 
+### Git
+- All Phase 1 work is in commit **`6dc21e4`** on branch **`phase-1`**, pushed to `origin/phase-1`
+  (the push worked from Claude's shell with the saved login). `phase-1` is **not merged** into `main` yet.
+- `notebooks/01_eda.ipynb` is the source of truth for the EDA. The py-percent script it was built
+  from was temporary and is not in the repo; edit the notebook directly from now on.
+
+### Guide meeting
+- The user is explaining Phases 0 and 1 to the guide in person on 2026-10-12, using a plain-words
+  summary prepared in this session. The guide's reaction may change the packet-loss decision below.
+
 ### Findings that affect later phases (details in `reports/data_facts.md`)
 1. **Loss is not mostly zero** (only 30% of normal rows have zero loss), so the roadmap's reason for
    not predicting loss does not hold. `sloss`/`dloss` track bytes (r = 0.996). **Open: user to decide**
@@ -240,5 +250,7 @@ or `reports/figures/eda_*.png`, and summarised in `reports/data_facts.md`. `pyte
 
 ## 11. Next step
 
-1. User decides on finding 1 (packet loss).
-2. Merge `phase-1` into `main`, then start **Phase 2 (preprocessing and splits)** on branch `phase-2`.
+1. Ask the user about the guide meeting and about finding 1 (packet loss). Claude's suggestion:
+   keep "show, don't predict", now justified by loss tracking bytes (r = 0.996).
+2. Merge `phase-1` into `main` and push, then start **Phase 2 (preprocessing and splits)** on
+   branch `phase-2`.
