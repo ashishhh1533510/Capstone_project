@@ -224,6 +224,7 @@ or `reports/figures/eda_*.png`, and summarised in `reports/data_facts.md`. `pyte
 | `notebooks/01_eda.ipynb` | 9 sections, executed with outputs saved. Built from a py-percent script via `nbformat`, run with `jupyter nbconvert --execute --inplace` |
 | `reports/tables/eda_*.csv` (14), `reports/figures/eda_*.png` (4) | All EDA outputs; `eda_key_numbers.csv` is the one-table summary |
 | `reports/data_facts.md` | Half-page note for Review 2 |
+| `reports/data_facts_simple.md` | Same findings in plain words, for the guide meeting (the user found the technical note hard to follow) |
 | `.gitignore` | **Bug fix:** `data/` also ignored `src/cnad/data/`, so Phase 0 never committed its `__init__.py`. Now `/data/` and `/models/` (root only) |
 
 ### Git
@@ -233,8 +234,11 @@ or `reports/figures/eda_*.png`, and summarised in `reports/data_facts.md`. `pyte
   from was temporary and is not in the repo; edit the notebook directly from now on.
 
 ### Guide meeting
-- The user is explaining Phases 0 and 1 to the guide in person on 2026-10-12, using a plain-words
-  summary prepared in this session. The guide's reaction may change the packet-loss decision below.
+- The user is explaining Phases 0 and 1 to the guide in person on 2026-10-12, using
+  `reports/data_facts_simple.md`. The guide's reaction may change the packet-loss decision below.
+- **Explain things to the user in plain words.** Jargon-heavy explanations (notebooks, EDA terms)
+  needed several retries this session; analogies (e.g. "a notebook is like Excel formulas with
+  answers underneath") worked.
 
 ### Findings that affect later phases (details in `reports/data_facts.md`)
 1. **Loss is not mostly zero** (only 30% of normal rows have zero loss), so the roadmap's reason for
