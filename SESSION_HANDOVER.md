@@ -170,6 +170,14 @@ Only direct dependencies are pinned; transitive ones are not locked.
 Git: first commit `85c9131` on `main` ("Phase 0: project scaffold, config and pinned dependencies").
 The existing `.agents/` and `.claude/` grill-me skill files and `skills-lock.json` were committed too.
 
+### GitHub
+
+- Remote `origin` = **https://github.com/ashishhh1533510/Capstone_project** (created empty by the user).
+- `main` pushed and tracking `origin/main`. Workflow: keep pushing progress to GitHub; one branch per phase.
+- Auth goes through Git Credential Manager. The first push failed from Claude's non-interactive shell
+  ("Password authentication is not supported"), so the user ran `git push -u origin main` once
+  to sign in; the saved login lets later pushes run without the user.
+
 ### Problems hit (useful if setting up again)
 
 - `winget` Python install sat for 10+ minutes before finishing — likely waiting on a hidden dialog.
@@ -181,11 +189,10 @@ The existing `.agents/` and `.claude/` grill-me skill files and `skills-lock.jso
 
 - Column lists (`categorical`, `numeric`, `regression_targets`, `regression_drop`) and the
   live-subset feature list are **not** in `config.yaml` yet — they belong to Phase 2.
-- No GitHub remote has been added.
 
 ## 9. Next step
 
-Start **Phase 1 (EDA)** of `IMPLEMENTATION_ROADMAP.md` on a new branch `phase-1`:
+Start **Phase 1 (EDA)** of `IMPLEMENTATION_ROADMAP.md` on a new branch `phase-1` (push it to GitHub):
 1. Get `UNSW_NB15_training-set.csv` and `UNSW_NB15_testing-set.csv` into `data/raw/`.
 2. Write `src/cnad/data/load.py` and `notebooks/01_eda.ipynb`; verify the per-class counts
    (175,341 train / 82,332 test) that were quoted from memory in Session 1.
