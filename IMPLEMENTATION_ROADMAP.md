@@ -51,7 +51,7 @@ shown on a Streamlit dashboard. A live demo captures real traffic from two lab V
 capstone_project_2023003296/
 ├── README.md
 ├── IMPLEMENTATION_ROADMAP.md
-├── pyproject.toml                # or requirements.txt + requirements-dev.txt
+├── pyproject.toml                # pinned deps; dev tools in the [dev] extra
 ├── .env.example                  # AZURE_*, GOOGLE_API_KEY, LANGSMITH_* (never commit .env)
 ├── .gitignore
 ├── configs/
@@ -106,11 +106,11 @@ capstone_project_2023003296/
 
 ---
 
-## Phase 0 — Project setup and boilerplate
+## Phase 0 — Project setup and boilerplate ✅ Done (2026-10-11, commit `85c9131`)
 
 1. Create the repo folders above and an empty `src/cnad` package.
-2. Create a Python 3.11 virtual environment.
-3. Write `pyproject.toml` / `requirements.txt` with pinned versions:
+2. Create a Python 3.11 virtual environment — lives at `C:\Users\Ashis\.venvs\cnad` (outside OneDrive).
+3. Write `pyproject.toml` with pinned versions (no separate requirements files; dev tools in `[dev]`):
    `pandas, numpy, pyarrow, scikit-learn, torch, optuna, joblib, pyyaml, matplotlib, seaborn,
    fastapi, uvicorn, pydantic, azure-storage-blob, adlfs, streamlit, plotly, langchain,
    langgraph, langchain-google-genai, langsmith, bert-score, python-dotenv`
@@ -120,7 +120,8 @@ capstone_project_2023003296/
 6. Write `configs/config.yaml` (seed = 42, file paths, held-out classes, threshold percentile = 95,
    validation fraction = 0.15) and `src/cnad/config.py` to load it.
 7. Write a one-paragraph `README.md` with setup commands.
-8. Set up Git: first commit, `main` branch protected by convention, one branch per phase.
+8. Set up Git (own repo inside the project folder): first commit, `main` branch protected by
+   convention, one branch per phase.
 
 **Done when:** `pip install -e .` works, `python -c "import cnad"` runs, and `pytest` runs (zero tests is fine).
 

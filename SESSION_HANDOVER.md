@@ -1,11 +1,15 @@
-# Session Handover — Post-Review-1 Scoping (grill-me session)
+# Session Handover
 
-**Date:** 2026-10-11
+Sessions 1 (scoping, sections 1–7) and 2 (Phase 0 build, section 8). Next step is in section 9.
+
+**Last updated:** 2026-10-11 · **Current status:** Phase 0 complete, Phase 1 not started
 **Project:** PROJ2999 Capstone — Cloud-Based Network Traffic Analysis and Anomaly Detection Using ML
 **Team:** Ashish Kumar (2023003296, lead), N. Tarun, P. Ganesh, K. Sathwik — Ashish does all build work alone · **Guide:** Dr P. Sowjanya
 **Companion file:** `IMPLEMENTATION_ROADMAP.md` (the phase-by-phase build plan — read it next)
 
 ---
+
+# Session 1 — Post-Review-1 Scoping (grill-me session)
 
 ## 1. Purpose of the session
 
@@ -117,7 +121,71 @@ explanations for alerts only, cached.
 
 No open questions remain.
 
-## 8. Next step
+---
 
-Start **Phase 0** of `IMPLEMENTATION_ROADMAP.md`: project boilerplate (folders, virtual environment,
-pinned requirements, `.gitignore`, `.env.example`, `configs/config.yaml`, `src/cnad` package).
+# Session 2 — Phase 0: project setup (2026-10-11)
+
+## 8. What was done
+
+**Phase 0 "Done when" check passed:** `pip install -e ".[dev]"` works, `import cnad` runs,
+`pytest` → 2 passed, `ruff check .` → clean.
+
+### Environment decisions (asked and answered this session)
+
+| Topic | Decision | Why |
+|---|---|---|
+| Python | **3.11.9**, installed per-user with `winget install Python.Python.3.11` | No Python on the machine (only the Microsoft Store stub). Path: `%LOCALAPPDATA%\Programs\Python\Python311\` |
+| Virtual environment | **`C:\Users\Ashis\.venvs\cnad`** — outside the project folder | Project is inside OneDrive; a ~2 GB venv (PyTorch) would sync |
+| Git | **Separate repo** inside `capstone_project_2023003296`, branch `main` | The whole Desktop is already one git repo; the project gets its own history. The Desktop repo sees the project folder as untracked — that is expected |
+| Dependency file | `pyproject.toml` only (no requirements.txt); dev tools in the `[dev]` extra | |
+| PyTorch | CPU build (`2.14.1+cpu`) | Laptop has Intel Iris Xe only — no CUDA GPU. DNN training will run on CPU |
+
+Activate in a new terminal: `& $HOME\.venvs\cnad\Scripts\Activate.ps1`
+
+### Pinned versions (in `pyproject.toml`)
+
+pandas 3.0.6 · numpy 2.4.6 · pyarrow 25.0.1 · scikit-learn 1.9.1 · torch 2.14.1 · optuna 5.0.0 ·
+joblib 1.6.0 · pyyaml 6.0.3 · matplotlib 3.11.2 · seaborn 0.13.2 · fastapi 0.143.0 · uvicorn 0.54.0 ·
+pydantic 2.14.0 · azure-storage-blob 12.31.0 · adlfs 2026.8.0 · streamlit 1.65.0 · plotly 7.1.0 ·
+langchain 1.4.4 · langgraph 1.2.14 · langchain-google-genai 4.4.1 · langsmith 0.14.7 ·
+bert-score 0.3.13 · python-dotenv 1.2.4 · dev: pytest 9.1.1 · ruff 0.17.0 · jupyter 1.1.1
+
+Only direct dependencies are pinned; transitive ones are not locked.
+
+### Files created
+
+| File | Contents |
+|---|---|
+| `pyproject.toml` | Package `cnad` (src layout), pinned deps, `[dev]` extra, pytest + ruff config (line length 100, py311) |
+| `configs/config.yaml` | seed 42; paths (raw, processed, pcaps, models, figures, tables); CSV names; validation fraction 0.15; held-out classes DoS/Reconnaissance/Backdoor; threshold percentile 95 |
+| `src/cnad/config.py` | `load_config(path=None)` (env var `CNAD_CONFIG` overrides) resolves `paths` to absolute paths under `PROJECT_ROOT`; `get_config()` is the cached default |
+| `src/cnad/__init__.py` + 9 empty subpackages | `data, detection, regression, fusion, cloud, api, agent, live, dashboard` |
+| `tests/test_config.py` | Checks locked config values and that paths resolve under the project root |
+| `.gitignore` | `data/`, `models/`, `.env`, Python/tool caches, venvs |
+| `.env.example` | Azure storage (account name/key/connection string/container), `CNAD_API_URL`, `GOOGLE_API_KEY`, LangSmith (tracing/key/project) — no values |
+| `README.md` | One paragraph + Windows setup commands |
+| `.gitkeep` files | `notebooks/`, `scripts/`, `reports/figures/`, `reports/tables/` |
+| `data/raw`, `data/processed`, `data/pcaps`, `models/` | Created locally, git-ignored |
+
+Git: first commit `85c9131` on `main` ("Phase 0: project scaffold, config and pinned dependencies").
+The existing `.agents/` and `.claude/` grill-me skill files and `skills-lock.json` were committed too.
+
+### Problems hit (useful if setting up again)
+
+- `winget` Python install sat for 10+ minutes before finishing — likely waiting on a hidden dialog.
+- The first `pip install` looked dead (its output was buffered) but was still running; a second
+  install started in parallel and failed with `WinError 32` (file locked). Fix: kill the stale pip
+  processes, run one install. Lesson: log pip to a file and check for running `python.exe` before retrying.
+
+### Not done in Phase 0 (by design)
+
+- Column lists (`categorical`, `numeric`, `regression_targets`, `regression_drop`) and the
+  live-subset feature list are **not** in `config.yaml` yet — they belong to Phase 2.
+- No GitHub remote has been added.
+
+## 9. Next step
+
+Start **Phase 1 (EDA)** of `IMPLEMENTATION_ROADMAP.md` on a new branch `phase-1`:
+1. Get `UNSW_NB15_training-set.csv` and `UNSW_NB15_testing-set.csv` into `data/raw/`.
+2. Write `src/cnad/data/load.py` and `notebooks/01_eda.ipynb`; verify the per-class counts
+   (175,341 train / 82,332 test) that were quoted from memory in Session 1.
