@@ -125,9 +125,13 @@ capstone_project_2023003296/
 
 **Done when:** `pip install -e .` works, `python -c "import cnad"` runs, and `pytest` runs (zero tests is fine).
 
-## Phase 1 — Get and understand the data (EDA)
+## Phase 1 — Get and understand the data (EDA) ✅ Done (2026-10-11, branch `phase-1`)
+
+Findings that affect later phases are listed at the end of `reports/data_facts.md`.
 
 1. Download the UNSW-NB15 partition CSVs from the official UNSW source into `data/raw/`.
+   (Got them from the Hugging Face mirror `Mireu-Lab/UNSW-NB15`; SHA-256 recorded in config. The
+   official names are swapped — `…testing-set.csv` is the 175,341-row train file; config maps it.)
 2. `load.py`: read both CSVs, strip whitespace in `attack_cat`, standardise class names, drop `id`.
 3. In `01_eda.ipynb`, record and save to `reports/`:
    - Row counts per class, train vs test (check against the known numbers).
@@ -136,7 +140,8 @@ capstone_project_2023003296/
    - Share of TCP rows, and share of TCP rows with `tcprtt > 0` and `synack > 0`.
    - Distribution of `tcprtt` and `synack` (raw and log), normal vs attack.
    - Confirm `tcprtt ≈ synack + ackdat` (proves the leakage rule).
-   - Share of zero `sloss`/`dloss` (justifies not predicting loss).
+   - Share of zero `sloss`/`dloss` (meant to justify not predicting loss — EDA showed it does
+     not: only 30% of normal rows have zero loss; see `data_facts.md`).
    - Correlation heatmap of the numeric features.
 4. Write a half-page "data facts" note in `reports/` — this feeds the Review 2 slides.
 
@@ -347,3 +352,5 @@ reported honestly whichever model wins.
 | Azure credits run out | Deallocate VMs when idle; keep the local run path working |
 | Gemini cost / non-determinism | Alerts only, caching, temperature 0, LangSmith monitoring; template fallback |
 | Live demo fails on the day | Recorded pcap replay of every scenario |
+| Normal latency has two TTL-defined regimes, mixed differently in train (74% fast) and test (46% fast) | Keep `sttl`/`dttl` in DNN inputs; report latency-gap false alarms per regime |
+| Lab VM TTLs (64/128) never appear in UNSW-NB15 | Check live-subset predictions on lab traffic in Phase 7/12 before trusting them |

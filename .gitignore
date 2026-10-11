@@ -1,6 +1,7 @@
 # Data and trained artefacts (large, reproducible from scripts)
-data/
-models/
+# Anchored to the root so src/cnad/data/ is still tracked
+/data/
+/models/
 
 # Secrets
 .env

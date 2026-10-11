@@ -1,0 +1,4 @@
+,distinct_train,distinct_test,test_only_values,train_only_values,top10_share_train_pct
+proto,133,131,,"icmp, rtp",92.87
+service,13,13,,,99.95
+state,9,7,"CLO, ACC","ECO, PAR, URN, no",100.0

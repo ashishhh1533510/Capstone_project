@@ -1,0 +1,7 @@
+split,group,rows,sloss_zero_pct,dloss_zero_pct,both_zero_pct
+train,all,175341.0,54.44,55.11,54.42
+train,normal,56000.0,30.17,31.91,30.16
+train,attack,119341.0,65.82,66.0,65.8
+test,all,82332.0,47.76,50.05,47.7
+test,normal,37000.0,24.86,29.64,24.79
+test,attack,45332.0,66.44,66.7,66.39

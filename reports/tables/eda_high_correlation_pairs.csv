@@ -1,0 +1,17 @@
+feature_a,feature_b,pearson_r
+is_ftp_login,ct_ftp_cmd,1.0
+dbytes,dloss,0.9965
+sbytes,sloss,0.9961
+swin,dwin,0.9901
+ct_srv_src,ct_srv_dst,0.9803
+dpkts,dloss,0.9786
+ct_dst_src_ltm,ct_srv_dst,0.9724
+dpkts,dbytes,0.9719
+spkts,sloss,0.9711
+ct_srv_src,ct_dst_src_ltm,0.9671
+spkts,sbytes,0.9638
+ct_dst_ltm,ct_src_dport_ltm,0.9621
+tcprtt,synack,0.9495
+tcprtt,ackdat,0.9418
+sinpkt,is_sm_ips_ports,0.9413
+ct_src_dport_ltm,ct_dst_sport_ltm,0.9068

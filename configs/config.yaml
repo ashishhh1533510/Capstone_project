@@ -11,8 +11,18 @@ paths:
   tables: reports/tables
 
 data:
-  train_csv: UNSW_NB15_training-set.csv
-  test_csv: UNSW_NB15_testing-set.csv
+  # The official partition files are named the wrong way round: "testing-set" holds the
+  # 175,341-row training partition and "training-set" the 82,332-row testing partition.
+  # Kept under their original names; swapped here so train = 175,341 rows as in the paper.
+  train_csv: UNSW_NB15_testing-set.csv
+  test_csv: UNSW_NB15_training-set.csv
+  expected_rows:
+    train: 175341
+    test: 82332
+  # Source: Archives/UNSW-NB15.zip from huggingface.co/datasets/Mireu-Lab/UNSW-NB15
+  sha256:
+    UNSW_NB15_testing-set.csv: bec7dd5ec88dc2a0ccc7a07879d338395ed7421750f675fd0339e07dfe0648fa
+    UNSW_NB15_training-set.csv: 734fe6642edf758f7c94d7d9149426b49d202fe8e7bf0bef47392489c3c0a559
 
 splits:
   validation_fraction: 0.15

@@ -1,8 +1,9 @@
 # Session Handover
 
-Sessions 1 (scoping, sections 1–7) and 2 (Phase 0 build, section 8). Next step is in section 9.
+Sessions 1 (scoping, sections 1–7), 2 (Phase 0 build, section 8) and 3 (Phase 1 EDA, section 10).
+Next step is in section 11.
 
-**Last updated:** 2026-10-11 · **Current status:** Phase 0 complete, Phase 1 not started
+**Last updated:** 2026-10-11 · **Current status:** Phase 1 complete (branch `phase-1`), Phase 2 not started
 **Project:** PROJ2999 Capstone — Cloud-Based Network Traffic Analysis and Anomaly Detection Using ML
 **Team:** Ashish Kumar (2023003296, lead), N. Tarun, P. Ganesh, K. Sathwik — Ashish does all build work alone · **Guide:** Dr P. Sowjanya
 **Companion file:** `IMPLEMENTATION_ROADMAP.md` (the phase-by-phase build plan — read it next)
@@ -190,9 +191,54 @@ The existing `.agents/` and `.claude/` grill-me skill files and `skills-lock.jso
 - Column lists (`categorical`, `numeric`, `regression_targets`, `regression_drop`) and the
   live-subset feature list are **not** in `config.yaml` yet — they belong to Phase 2.
 
-## 9. Next step
+## 9. Next step (superseded — see section 11)
 
-Start **Phase 1 (EDA)** of `IMPLEMENTATION_ROADMAP.md` on a new branch `phase-1` (push it to GitHub):
-1. Get `UNSW_NB15_training-set.csv` and `UNSW_NB15_testing-set.csv` into `data/raw/`.
-2. Write `src/cnad/data/load.py` and `notebooks/01_eda.ipynb`; verify the per-class counts
-   (175,341 train / 82,332 test) that were quoted from memory in Session 1.
+Phase 1 was started and finished in Session 3.
+
+---
+
+# Session 3 — Phase 1: EDA (2026-10-11)
+
+## 10. What was done
+
+**Phase 1 "Done when" check passed:** every dataset number is saved in `reports/tables/eda_*.csv`
+or `reports/figures/eda_*.png`, and summarised in `reports/data_facts.md`. `pytest` → 8 passed,
+`ruff check .` → clean.
+
+### Data download
+- Official UNSW download is a SharePoint folder (not scriptable). Used the Hugging Face mirror
+  **`Mireu-Lab/UNSW-NB15`**, file `Archives/UNSW-NB15.zip` (its loose `train.csv`/`test.csv` are
+  byte-identical). Original file names kept in `data/raw/`; SHA-256 of both recorded in config
+  and checked by a test.
+- **The official file names are swapped:** `UNSW_NB15_testing-set.csv` has 175,341 rows,
+  `UNSW_NB15_training-set.csv` has 82,332. `config.yaml` sets `train_csv` to the testing-set file
+  so train = 175,341 (as in the UNSW paper and our roadmap). Per-class counts confirmed.
+- CSVs start with a UTF-8 BOM → read with `encoding="utf-8-sig"`.
+
+### Files created / changed
+| File | Contents |
+|---|---|
+| `configs/config.yaml` | Swapped CSV mapping (with comment), SHA-256s, `expected_rows` |
+| `src/cnad/data/load.py` | `raw_path`, `clean` (drop `id`, strip text, `Backdoors`→`Backdoor`, reject unknown classes), `load_split`, `load_both`; `CLASSES` list |
+| `tests/test_load.py` | Synthetic `clean` tests + data tests (hash, row counts, classes, Normal ⇔ label 0) that skip if data is absent |
+| `notebooks/01_eda.ipynb` | 9 sections, executed with outputs saved. Built from a py-percent script via `nbformat`, run with `jupyter nbconvert --execute --inplace` |
+| `reports/tables/eda_*.csv` (14), `reports/figures/eda_*.png` (4) | All EDA outputs; `eda_key_numbers.csv` is the one-table summary |
+| `reports/data_facts.md` | Half-page note for Review 2 |
+| `.gitignore` | **Bug fix:** `data/` also ignored `src/cnad/data/`, so Phase 0 never committed its `__init__.py`. Now `/data/` and `/models/` (root only) |
+
+### Findings that affect later phases (details in `reports/data_facts.md`)
+1. **Loss is not mostly zero** (only 30% of normal rows have zero loss), so the roadmap's reason for
+   not predicting loss does not hold. `sloss`/`dloss` track bytes (r = 0.996). **Open: user to decide**
+   whether to keep "show, don't predict" with a different reason, or change it.
+2. **Two latency regimes set by TTL** in normal traffic: `31/29` ≈ 0.7 ms, `254/252` and `62/252` ≈ 150–177 ms.
+   Train normal is 74% fast, test normal 46% fast → keep `sttl`/`dttl` as DNN inputs; check
+   latency-gap false alarms per regime in Phase 6.
+3. **Lab TTLs (64/128) never occur in UNSW-NB15** → risk for live-subset models (Phases 7/12).
+4. `state` values `CLO`, `ACC` appear only in test → one-hot with `handle_unknown="ignore"`.
+5. Leakage confirmed exactly: `tcprtt = synack + ackdat` on 100% of rows.
+6. Regression split C size before validation: 38,244 train / 26,082 test.
+
+## 11. Next step
+
+1. User decides on finding 1 (packet loss).
+2. Merge `phase-1` into `main`, then start **Phase 2 (preprocessing and splits)** on branch `phase-2`.

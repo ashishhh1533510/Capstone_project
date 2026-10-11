@@ -1,0 +1,7 @@
+split,group,rows,tcp_rows,tcp_pct_of_rows,tcp_with_rtt_and_synack,pct_of_tcp,pct_of_rows,non_tcp_with_tcprtt_gt_0
+train,all,175341.0,79946.0,45.59,79041.0,98.87,45.08,0.0
+train,normal,56000.0,39121.0,69.86,38244.0,97.76,68.29,0.0
+train,attack,119341.0,40825.0,34.21,40797.0,99.93,34.19,0.0
+test,all,82332.0,43095.0,52.34,41205.0,95.61,50.05,0.0
+test,normal,37000.0,27848.0,75.26,26082.0,93.66,70.49,0.0
+test,attack,45332.0,15247.0,33.63,15123.0,99.19,33.36,0.0
